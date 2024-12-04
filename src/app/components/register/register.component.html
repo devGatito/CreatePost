@@ -1,0 +1,12 @@
+<div class="container">
+  <section>
+    <h1>Register</h1>
+    <form (submit)="register(email.value, password.value); $event.preventDefault()">
+      <label>Email:</label>
+      <input type="email" #email required />
+      <label>Password:</label>
+      <input type="password" #password required />
+      <button type="submit">Register</button>
+    </form>
+    </section>
+</div>

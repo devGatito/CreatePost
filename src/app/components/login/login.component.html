@@ -1,0 +1,31 @@
+<div class="container">
+  <section>
+    <form (submit)="login(email.value, password.value); $event.preventDefault()">
+      
+      <h1>Inicia Sesión</h1>
+    
+      <label>Email:</label>
+      <input type="email" #email required placeholder="Ingresa tu email">
+
+      <label>Password:</label>
+      <input type="password" #password required placeholder="Ingresa tu password">
+
+      <button type="submit">Login</button>
+      <hr>
+
+      <!-- Botones de autenticación -->
+      <button type="button" (click)="loginWithGoogle()" style="background-color: white;">
+        Inicia sesión con Google
+      </button>
+      <button type="button" (click)="loginWithFacebook()" style="background-color: white;">
+        Inicia sesión con Facebook
+      </button>
+<!-- Enlace en login.component.html -->
+<!-- login.component.html -->
+<a routerLink="/reset-password" routerLinkActive="router-link-active">Olvidaste la contraseña?</a>
+<a routerLink="/register" routerLinkActive="router-link-active">No tienes cuenta?Registrate</a>
+
+
+    </form>
+  </section>
+</div>
