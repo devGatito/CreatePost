@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "login-firebase-810b5"
-  }
+    "default": "login-firebase-810b5",
+    "staging": "login-firebase-810b5"
+  },
+  "targets": {},
+  "etags": {}
 }

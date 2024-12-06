@@ -1,8 +1,15 @@
-<div class="container">
-    <div class="container-img">
-        <img 
-        width="100%"
-        height="200px"
-        data-src="https://cdn.pixabay.com/photo/2023/02/01/21/40/pink-7761356_1280.png">
+<div style="background-color: #000000; height: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
+    <button routerLink="/create-post" routerLinkActive="router-link-active">Crear publicacion</button>
+    <div *ngIf="posts$ | async as posts; else loading">
+      <div *ngFor="let post of posts">
+        <p style="color: aliceblue;">Publicado el: {{ post.createdAt?.toDate() | date: 'medium' }}</p>
+        <img [src]="post.imageBase64" alt="Imagen subida" style="max-width: 20%; height: auto; margin: 10px;">
+      </div>
     </div>
-</div>
+    
+    <!-- Mensaje de carga -->
+    <ng-template #loading>
+      <p style="color: aliceblue;">Cargando imágenes...</p>
+    </ng-template>
+  </div>
+  

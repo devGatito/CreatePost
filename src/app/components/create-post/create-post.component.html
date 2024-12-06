@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="create-post">
+    <h2>Crear Post</h2>
+    <input type="file" (change)="onFileSelected($event)" />
+    <button (click)="uploadFile()">Subir Imagen</button>
+  
+    <!-- Muestra la imagen convertida o una vista previa -->
+    <div *ngIf="imageBase64">
+      <p>Imagen convertida y subida:</p>
+      <img [src]="imageBase64" alt="Imagen subida" style="max-width: 100%; height: auto;" />
+    </div>
+  </div>
+</div>

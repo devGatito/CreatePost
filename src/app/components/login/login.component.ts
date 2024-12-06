@@ -18,38 +18,59 @@ export class LoginComponent {
     signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         console.log('Usuario logueado exitosamente:', userCredential.user);
-     
-        this.router.navigate(['/home']); 
+        
+        // Obtener el token y almacenarlo
+        userCredential.user.getIdToken().then((token) => {
+          localStorage.setItem('authToken', token);
+          console.log('Token guardado:', token);
+          
+          // Navegar a la página de inicio
+          this.router.navigate(['/home']);
+        });
       })
       .catch((error) => {
         console.error('Error al iniciar sesión:', error.message);
         alert("El usuario no existe");
       });
   }
-
-  // Login con Google
+  
   loginWithGoogle() {
     const googleProvider = new GoogleAuthProvider();
     signInWithPopup(this.auth, googleProvider)
       .then((userCredential) => {
         console.log('Usuario logueado con Google:', userCredential.user);
-        this.router.navigate(['/home']); 
+  
+        // Obtener el token y almacenarlo
+        userCredential.user.getIdToken().then((token) => {
+          localStorage.setItem('authToken', token);
+          console.log('Token guardado:', token);
+  
+          // Navegar a la página de inicio
+          this.router.navigate(['/home']);
+        });
       })
       .catch((error) => {
         console.error('Error al iniciar sesión con Google:', error.message);
       });
   }
-
-  // Login con Facebook
+  
   loginWithFacebook() {
     const facebookProvider = new FacebookAuthProvider();
     signInWithPopup(this.auth, facebookProvider)
       .then((userCredential) => {
         console.log('Usuario logueado con Facebook:', userCredential.user);
-        this.router.navigate(['/home']); 
+  
+        // Obtener el token y almacenarlo
+        userCredential.user.getIdToken().then((token) => {
+          localStorage.setItem('authToken', token);
+          console.log('Token guardado:', token);
+  
+          // Navegar a la página de inicio
+          this.router.navigate(['/home']);
+        });
       })
       .catch((error) => {
         console.error('Error al iniciar sesión con Facebook:', error.message);
       });
   }
-}
+}  
