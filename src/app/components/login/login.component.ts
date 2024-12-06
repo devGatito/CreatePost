@@ -3,7 +3,7 @@ import { Auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, 
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router'; 
 import { RouterLink, RouterLinkActive, RouterLinkWithHref } from '@angular/router';
-
+ 
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -40,12 +40,10 @@ export class LoginComponent {
       .then((userCredential) => {
         console.log('Usuario logueado con Google:', userCredential.user);
   
-        // Obtener el token y almacenarlo
         userCredential.user.getIdToken().then((token) => {
           localStorage.setItem('authToken', token);
           console.log('Token guardado:', token);
   
-          // Navegar a la página de inicio
           this.router.navigate(['/home']);
         });
       })
@@ -60,12 +58,10 @@ export class LoginComponent {
       .then((userCredential) => {
         console.log('Usuario logueado con Facebook:', userCredential.user);
   
-        // Obtener el token y almacenarlo
         userCredential.user.getIdToken().then((token) => {
           localStorage.setItem('authToken', token);
           console.log('Token guardado:', token);
   
-          // Navegar a la página de inicio
           this.router.navigate(['/home']);
         });
       })

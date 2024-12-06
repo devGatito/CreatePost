@@ -1,5 +1,7 @@
 <div style="background-color: #000000; height: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
-    <button routerLink="/create-post" routerLinkActive="router-link-active">Crear publicacion</button>
+  <div style="width: 45%; background-color: aliceblue; position: fixed; top: 0; z-index: 1000; border-radius: 0 0 20px 20px;">
+       <a routerLink="/create-post" routerLinkActive="router-link-active"> <button style="width: 100%; height: 100%;">Crear publicacion</button></a>
+  </div>
     <div *ngIf="posts$ | async as posts; else loading">
       <div *ngFor="let post of posts">
         <p style="color: aliceblue;">Publicado el: {{ post.createdAt?.toDate() | date: 'medium' }}</p>
@@ -7,7 +9,6 @@
       </div>
     </div>
     
-    <!-- Mensaje de carga -->
     <ng-template #loading>
       <p style="color: aliceblue;">Cargando imágenes...</p>
     </ng-template>
