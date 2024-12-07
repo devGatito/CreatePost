@@ -1,8 +1,7 @@
 <div class="post-list">
   <h2>Publicaciones</h2>
-  <button > <a routerLink="/reset-password" routerLinkActive="router-link-active"> 
+  <button> <a routerLink="/create-post" routerLinkActive="router-link-active"> 
     Crear publicacion
-  
   </a>
   </button>
 
@@ -14,9 +13,29 @@
       style="max-width: 100%; height: auto;" 
     />
     <p>Creado el: {{ post.createdAt.toDate() | date: 'medium' }}</p>
-    <p>Comentarios ({{ post.comments.length }}):</p>
-      <p *ngFor="let comment of post.comments">{{ comment }}</p>
-    
+    <p (click)="openCommentsModal(post)">Comentarios ({{ post.comments.length }})</p>
+
+    <!-- Modal -->
+    <div *ngIf="selectedPost && selectedPost.id === post.id" class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="closeCommentsModal()">×</span>
+        <h4>Comentarios</h4>
+        <div *ngFor="let comment of selectedPost.comments; let i = index">
+          <p>{{ comment }}
+            <button (click)="editComment(post, i)"> Editar</button>
+            <button (click)="deleteComment(post, i)"> Borrar</button>
+          </p>
+        </div>
+        <div class="comment-section">
+          <textarea 
+            [(ngModel)]="userComments[selectedPost.id]" 
+            placeholder="Escribe un comentario..." 
+            rows="2">
+          </textarea>
+          <button (click)="submitComment(selectedPost)">💬 Enviar comentario</button>
+        </div>
+      </div>
+    </div>
 
     <div class="post-interaction">
       <button 
@@ -25,15 +44,6 @@
       >
         Me gusta
       </button>
-    </div>
-
-    <div class="comment-section">
-      <textarea 
-        [(ngModel)]="userComments[post.id]" 
-        placeholder="Escribe un comentario..." 
-        rows="2">
-      </textarea>
-      <button (click)="submitComment(post)">💬 Enviar comentario</button>
     </div>
   </div>
 </div>

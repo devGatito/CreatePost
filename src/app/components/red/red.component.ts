@@ -1,19 +1,25 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, from } from 'rxjs';
-import { Firestore, collection, getDocs, updateDoc, doc, DocumentData, arrayUnion } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, updateDoc, doc, DocumentData, arrayUnion, arrayRemove } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; 
+import { RouterLink, RouterLinkActive, RouterLinkWithHref } from '@angular/router';
+
 @Component({
   selector: 'app-red',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive, RouterLinkWithHref],
   templateUrl: './red.component.html',
   styleUrls: ['./red.component.css']
 })
 export class RedComponent {
   posts$: Observable<any>;
   userComments: { [key: string]: string } = {};
+  selectedPost: any = null;
+  editingCommentIndex: number | null = null;
+
   constructor(private firestore: Firestore) {
     this.posts$ = this.getPosts();
   }
@@ -49,11 +55,34 @@ export class RedComponent {
     const commentText = this.userComments[post.id];
     if (commentText && commentText.trim()) {
       await updateDoc(postRef, {
-        comments: arrayUnion(commentText) 
+        comments: arrayUnion(commentText)
       });
       post.comments.push(commentText); 
       this.userComments[post.id] = ''; 
-      console.log(`Comentario agregado: "${commentText}" en la publicación: ${post.name}`);
     }
+  }
+
+  openCommentsModal(post: any): void {
+    this.selectedPost = post;
+  }
+
+  closeCommentsModal(): void {
+    this.selectedPost = null; 
+    this.editingCommentIndex = null; 
+  }
+
+  editComment(post: any, index: number): void {
+    this.editingCommentIndex = index;
+    this.userComments[post.id] = post.comments[index]; 
+  }
+
+  async deleteComment(post: any, index: number): Promise<void> {
+    const postRef = doc(this.firestore, `posts/${post.id}`);
+    const commentToDelete = post.comments[index];
+    await updateDoc(postRef, {
+      comments: arrayRemove(commentToDelete)
+    });
+    post.comments.splice(index, 1); 
+    
   }
 }
