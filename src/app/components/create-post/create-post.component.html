@@ -1,13 +1,25 @@
 <div class="container">
   <div class="create-post">
-    <h2>Crear Post</h2>
-    <input type="file" (change)="onFileSelected($event)" />
+    <h2>Crear Publicación</h2>
+    <input 
+      type="text" 
+      [(ngModel)]="postName" 
+      placeholder="Nombre de la publicación"
+    />
+    <input 
+      type="file" 
+      (change)="onFileSelected($event)" 
+    />
     <button (click)="uploadFile()">Subir Imagen</button>
   
-    <!-- Muestra la imagen convertida o una vista previa -->
     <div *ngIf="imageBase64">
       <p>Imagen convertida y subida:</p>
-      <img [src]="imageBase64" alt="Imagen subida" style="max-width: 100%; height: auto;" />
+      <img 
+        [src]="imageBase64" 
+        alt="Imagen subida" 
+        style="max-width: 100%; height: auto;" 
+      />
+      <button (click)="uploadFile()">Crear Publicación</button>
     </div>
   </div>
 </div>

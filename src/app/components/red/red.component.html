@@ -1,16 +1,39 @@
-<div style="background-color: #000000; height: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center;">
-  <div style="width: 45%; background-color: aliceblue; position: fixed; top: 0; z-index: 1000; border-radius: 0 0 20px 20px;">
-       <a routerLink="/create-post" routerLinkActive="router-link-active"> <button style="width: 100%; height: 100%;">Crear publicacion</button></a>
-  </div>
-    <div *ngIf="posts$ | async as posts; else loading">
-      <div *ngFor="let post of posts">
-        <p style="color: aliceblue;">Publicado el: {{ post.createdAt?.toDate() | date: 'medium' }}</p>
-        <img [src]="post.imageBase64" alt="Imagen subida" style="max-width: 20%; height: auto; margin: 10px;">
-      </div>
-    </div>
-    
-    <ng-template #loading>
-      <p style="color: aliceblue;">Cargando imágenes...</p>
-    </ng-template>
-  </div>
+<div class="post-list">
+  <h2>Publicaciones</h2>
+  <button > <a routerLink="/reset-password" routerLinkActive="router-link-active"> 
+    Crear publicacion
   
+  </a>
+  </button>
+
+  <div *ngFor="let post of posts$ | async" class="post-card">
+    <h3>{{ post.name }}</h3>
+    <img 
+      [src]="post.imageBase64" 
+      alt="Imagen de la publicación" 
+      style="max-width: 100%; height: auto;" 
+    />
+    <p>Creado el: {{ post.createdAt.toDate() | date: 'medium' }}</p>
+    <p>Comentarios ({{ post.comments.length }}):</p>
+      <p *ngFor="let comment of post.comments">{{ comment }}</p>
+    
+
+    <div class="post-interaction">
+      <button 
+        (click)="likePost(post)" 
+        [ngStyle]="{ 'background-color': post.liked ? '#d4edda' : '#f8d7da' }"
+      >
+        Me gusta
+      </button>
+    </div>
+
+    <div class="comment-section">
+      <textarea 
+        [(ngModel)]="userComments[post.id]" 
+        placeholder="Escribe un comentario..." 
+        rows="2">
+      </textarea>
+      <button (click)="submitComment(post)">💬 Enviar comentario</button>
+    </div>
+  </div>
+</div>

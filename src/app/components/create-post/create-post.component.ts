@@ -1,17 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; 
+import { Router } from '@angular/router'; 
+import { RouterLink, RouterLinkActive, RouterLinkWithHref } from '@angular/router';
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule,FormsModule,RouterLink, RouterLinkWithHref, RouterLinkActive],
 })
 export class CreatePostComponent {
   selectedFile: File | null = null;
-  imageBase64: string | null = null; // Para almacenar la cadena base64 de la imagen
-  private firestore = inject(Firestore);  // Inyección de Firestore
+  imageBase64: string | null = null;
+  postName: string = '';
+  private firestore = inject(Firestore);
 
   constructor() {}
 
@@ -19,7 +23,6 @@ export class CreatePostComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedFile = input.files[0];
-      console.log('Archivo seleccionado:', this.selectedFile.name);
     }
   }
 
@@ -28,37 +31,40 @@ export class CreatePostComponent {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (reader.result) {
-          resolve(reader.result as string); // Resolvemos con la cadena base64
+          resolve(reader.result as string);
         }
       };
       reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file); // Convertir archivo a base64
+      reader.readAsDataURL(file);
     });
   }
 
   async uploadFile(): Promise<void> {
-    if (!this.selectedFile) {
-      alert('Por favor, selecciona un archivo primero.');
+    if (!this.selectedFile || !this.postName) {
+      alert('Por favor, completa todos los campos.');
       return;
     }
 
     try {
-      // Convertir la imagen a base64
       this.imageBase64 = await this.convertFileToBase64(this.selectedFile);
-      console.log('Imagen convertida a Base64:', this.imageBase64);
-
-      // Guardar la imagen base64 en Firestore
       if (this.imageBase64) {
         const postCollection = collection(this.firestore, 'posts');
         await addDoc(postCollection, {
+          name: this.postName,
           imageBase64: this.imageBase64,
-          createdAt: new Date()
+          createdAt: new Date(),
         });
-        alert('Imagen guardada como Base64 en Firestore');
+        alert('Publicación creada exitosamente.');
+        this.resetForm();
       }
     } catch (error) {
-      console.error('Error al convertir la imagen:', error);
-      alert('Error al convertir la imagen.');
+      alert('Error al crear la publicación.');
     }
+  }
+
+  resetForm(): void {
+    this.postName = '';
+    this.selectedFile = null;
+    this.imageBase64 = null;
   }
 }

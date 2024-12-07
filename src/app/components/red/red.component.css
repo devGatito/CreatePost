@@ -1,0 +1,45 @@
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center; 
+  justify-content: center;
+  min-height: 100vh;
+   
+}
+
+.post-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px; 
+  
+}
+
+.post-card img {
+  margin: 8px 0;
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+   
+}
+
+.post-interaction {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: center; 
+}
+
+.post-interaction button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.post-interaction button:hover {
+  background-color: #f0f0f0;
+}
